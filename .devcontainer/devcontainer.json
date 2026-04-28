@@ -36,10 +36,13 @@
 	
 	// Windows Setup (WSL2)
     "mounts": [
-		"source=/mnt/wslg,target=/mnt/wslg,type=bind,consistency=cached"
+		"source=/mnt/wslg,target=/mnt/wslg,type=bind,consistency=delegated"
     ],
 	"containerEnv": {
-		"PULSE_SERVER": "/mnt/wslg/PulseServer"
+		"PULSE_SERVER": "/mnt/wslg/PulseServer",
+		"DISPLAY": ":0",
+        "WAYLAND_DISPLAY": "wayland-0",
+        "XDG_RUNTIME_DIR": "/mnt/wslg/runtime-dir"
 	},
 
 
