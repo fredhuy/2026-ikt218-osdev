@@ -1,5 +1,11 @@
 extern isr_handler
 
+global isr0
+global isr1
+global isr2
+global isr3
+global isr_stub_table
+
 ; Common ISR code
 isr_common_stub:
     ; 1. Save CPU state
@@ -13,7 +19,9 @@ isr_common_stub:
 	mov gs, ax
 	
     ; 2. Call C handler
-	call isr_handler
+	push esp
+    call isr_handler
+    add esp, 4
 	
     ; 3. Restore state
 	pop eax 
@@ -23,16 +31,12 @@ isr_common_stub:
 	mov gs, ax
 	popa
 	add esp, 8 ; Cleans up the pushed error code and pushed ISR number
-	sti
+	;sti
 	iret ; pops 5 things at once: CS, EIP, EFLAGS, SS, and ESP
 
 
 
 
-global isr0
-global isr1
-global isr2
-global isr3
 
 ; 0: Divide By Zero Exception
 isr0:
@@ -61,3 +65,10 @@ isr3:
     push byte 0
     push byte 3
     jmp isr_common_stub
+
+
+isr_stub_table:
+    dd isr0
+    dd isr1
+    dd isr2
+    dd isr3

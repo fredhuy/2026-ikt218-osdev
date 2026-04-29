@@ -14,10 +14,8 @@ uint32_t ds;
 } registers_t;
 
 
-/// FIIIIIIXXXXXXXXXX
-void ist_init();
 
-void isr_handler(registers_t regs);
+void isr_handler(registers_t* regs);
 
 
 //Reserved ISR's for exceptions
