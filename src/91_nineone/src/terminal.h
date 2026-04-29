@@ -22,6 +22,6 @@ void terminal_putchar(char c, uint8 color, int x, int y);
  * @param x      Starting column
  * @param y      Starting row
  */
-void print(const char* str, uint8 color, int x, int y);
+void terminal_write(const char* str, uint8 color, int x, int y);
 
 #endif // TERMINAL_H

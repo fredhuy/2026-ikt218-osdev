@@ -1,10 +1,10 @@
-#include "terminal.c"
+#include "terminal.h"
 #include "colors.h"
-#define terminal_write print
+#include "gdt.h"
 
 int main() {
     init_gdt();
-    print("Velkommen til FreDDaviDOS!", COLOR(YELLOW, BLUE), 0, 0);
+    terminal_write("Velkommen til FreDDaviDOS!", COLOR(YELLOW, BLUE), 0, 0);
 
     while (1) { // coming soon
     }

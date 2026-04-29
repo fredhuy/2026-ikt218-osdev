@@ -1,3 +1,4 @@
+#include "gdt.h"
 #include "types.h"
 
 struct gdt_entry_struct {    // Must split fields up like this to support ancient 1970s Intel CPU architecture
