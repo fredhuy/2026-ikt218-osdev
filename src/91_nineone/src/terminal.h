@@ -1,7 +1,7 @@
 #ifndef TERMINAL_H
 #define TERMINAL_H
 
-#include "types.h"
+#include "libc/stdint.h"
 
 #define VGA_WIDTH  80
 #define VGA_HEIGHT 25
