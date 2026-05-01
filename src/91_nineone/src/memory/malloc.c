@@ -40,22 +40,22 @@ void print_memory_layout()
     uint8 c = COLOR(YELLOW, BLUE);
 
     print("Memory used:", COLOR(YELLOW, BLUE), 1, 1);
-    print_uint(memory_used, COLOR(YELLOW, BLUE), 14, 1);
+    print_uint(memory_used, COLOR(YELLOW, BLUE), 13, 1);
 
 
     print("Heap size (bytes):", c, 1, 2);
-    print_uint(heap_end - heap_begin, c, 19, 2);
+    print_uint(heap_end - heap_begin, c, 16, 2);
 
-    print("Heap start: 0x", c, 1, 3);
-    print_uint(heap_begin, c, 17, 3);
+    print("Heap start:  0x", c, 1, 3);
+    print_uint(heap_begin, c, 16, 3);
 
-    print("Heap end: 0x", c, 1, 4);
-    print_uint(heap_end, c, 14, 4);
+    print("Heap end:    0x", c, 1, 4);
+    print_uint(heap_end, c, 16, 4);
 
     print("PHeap start: 0x", c, 1, 5);
-    print_uint(pheap_begin, c, 18, 5);
+    print_uint(pheap_begin, c, 16, 5);
 
-    print("PHeap end: 0x", c, 1, 6);
+    print("PHeap end:   0x", c, 1, 6);
     print_uint(pheap_end, c, 16, 6);
 
     /*
