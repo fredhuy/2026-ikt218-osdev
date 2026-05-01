@@ -2,6 +2,8 @@
 
 #include "libc/stdint.h"
 
+#define print terminal_write
+
 // Function to copy memory from source to destination
 void* memcpy(void* dest, const void* src, size_t count )
 {

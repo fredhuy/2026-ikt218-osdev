@@ -5,7 +5,7 @@
 #include "libc/stdio.h"
 #include "kernel/system.h"
 
-
+#define print terminal_write
 #define MAX_PAGE_ALIGNED_ALLOCS 32
 
 uint32_t last_alloc = 0;

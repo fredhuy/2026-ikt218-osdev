@@ -1,6 +1,9 @@
 #include "libc/stdio.h"
 #include "../terminal.h"
 
+#define print terminal_write
+
+
 void print_uint(uint32_t n, uint8_t color, int x, int y) {
     char buffer[11];
     int i = 0;

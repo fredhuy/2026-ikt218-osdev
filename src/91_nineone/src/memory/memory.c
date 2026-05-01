@@ -4,6 +4,8 @@
 #include "../colors.h"
 #include "../terminal.h"
 
+#define print terminal_write
+
 static uint32_t* page_directory = 0;   // Define a pointer to the page directory and initialize it to zero
 static uint32_t page_dir_loc = 0;      // Define the location of the page directory and initialize it to zero
 static uint32_t* last_page = 0;        // Define a pointer to the last page and initialize it to zero

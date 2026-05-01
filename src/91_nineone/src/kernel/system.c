@@ -2,6 +2,8 @@
 #include "libc/stdint.h"
 #include "../colors.h"
 
+#define print terminal_write
+
 void panic(const char* message)
 {
     uint8_t c = COLOR(WHITE, RED);
