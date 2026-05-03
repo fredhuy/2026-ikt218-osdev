@@ -1,36 +1,13 @@
 #include "menu.h"
+#include "main_menu.h"
+#include "paint.h"
 #include "terminal.h"
 #include "libc/string.h"
 #include "libc/stdbool.h"
 #include "arch/i386/isr.h"
 #include "colors.h"
 
-static int selected_item = 0;
-#define NUM_OPTIONS 3
-
-
-struct button {
-    const char* label;
-    void (*action)();
-};
-
-void test_action() {
-    terminal_write("clicked 1st button", COLOR(BLUE, WHITE), 45, 16);
-}
-
-void test_actio2() {
-    terminal_write("clicked 2nd button", COLOR(BLUE, WHITE), 45, 16);
-}
-
-void test_actio3() {
-    terminal_write("clicked 3rd button", COLOR(BLUE, WHITE), 45, 16);
-}
-
-struct button start_menu[] = {
-    {"Print info", test_action},
-    {"Paint program", test_actio2},
-    {"Play game", test_actio3}
-};
+int current_menu = MAIN_MENU; // 0 = main menu, 1 = paint program
 
 void print_button(struct button* btn, bool is_selected, int x, int y) {
     int len = strlen(btn->label);
@@ -60,22 +37,20 @@ void keyboard_handler(registers_t* regs) {
     if (scancode & 0x80) return;
 
     // Vi bruker scancodes direkte for å være helt sikre (W=0x11, S=0x1F, Enter=0x1C)
-    switch(scancode) {
-        case 0x11: // W
-            selected_item = (selected_item - 1 + NUM_OPTIONS) % NUM_OPTIONS;
+    switch(current_menu) {
+        case MAIN_MENU:
+            handle_main_menu_keyboard(scancode);
+            terminal_write("Main menu", COLOR(LIGHT_GREY, BLACK), 0, 20);
             break;
-        case 0x1F: // S
-            selected_item = (selected_item + 1) % NUM_OPTIONS;
-            break;
-        case 0x1C: // Enter
-            start_menu[selected_item].action();
+        case PAINT_MENU:
+            handle_paint_keyboard(scancode);
+            terminal_write("Paint menu", COLOR(LIGHT_GREY, BLACK), 0, 20);
             break;
     }
-    draw_buttons();
 }
 
-void menu_init() {
-    draw();
+void init_menu() {
+    enter_main_menu();
     // Register keyboard handler for IRQ1 (keyboard interrupt)
     register_interrupt_handler(33, keyboard_handler);
 }
@@ -105,21 +80,4 @@ void draw_window(const char* title) {
     terminal_write("\xB9", attr, 2, 0); // ╠
     terminal_write(title, COLOR(YELLOW, BLUE), 3, 0);
     terminal_write("\xCC", attr, 3 + strlen(title), 0); // ╣
-}
-
-void draw_buttons() {
-
-    int num_buttons = sizeof(start_menu) / sizeof(start_menu[0]);
-    int start_x = 30;
-    int start_y = 10;
-
-    for (int i = 0; i < num_buttons; i++) {
-        bool is_selected = (i == selected_item);
-        print_button(&start_menu[i], is_selected, start_x, start_y + i * 4);
-    }
-}
-
-void draw() {
-    draw_window("Main Menu");
-    draw_buttons();
 }

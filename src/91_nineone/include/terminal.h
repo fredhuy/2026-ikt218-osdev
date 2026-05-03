@@ -24,4 +24,6 @@ void terminal_putchar(uint8 c, uint8 color, int x, int y);
  */
 void terminal_write(const char* str, uint8 color, int x, int y);
 
+void terminal_clear();
+
 #endif // TERMINAL_H

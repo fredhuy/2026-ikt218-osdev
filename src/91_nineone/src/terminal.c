@@ -18,3 +18,11 @@ void terminal_write(const char* str, uint8 color, int x, int y) {
         }
     }
 }
+
+void terminal_clear() {
+    for (int y = 1; y < VGA_HEIGHT - 1; y++) {
+        for (int x = 1; x < VGA_WIDTH - 1; x++) {
+            terminal_putchar(' ', COLOR(LIGHT_GREY, BLACK), x, y);
+        }
+    }
+}   

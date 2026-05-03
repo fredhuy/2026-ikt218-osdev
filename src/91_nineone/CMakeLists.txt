@@ -70,6 +70,8 @@ add_executable(uiaos-kernel
     src/arch/i386/gdt_flush.asm
     src/terminal.c
     src/menu.c
+	src/main_menu.c
+	src/paint.c
 	src/arch/i386/idt.c
 	src/arch/i386/isr.c
 	src/arch/i386/isr.asm

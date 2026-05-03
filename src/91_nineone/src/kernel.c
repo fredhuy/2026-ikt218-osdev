@@ -59,7 +59,7 @@ int main() {
     void* some_memory = malloc(12345); 
     void* memory2 = malloc(54321); 
     void* memory3 = malloc(13331);
-    menu_init();
+    init_menu();
 
     
 
