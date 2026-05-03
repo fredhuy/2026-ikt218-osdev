@@ -66,8 +66,6 @@ int main() {
     void* memory3 = malloc(13331);
     menu_init();
 
-    
-
     play_music();
 
     while (1) {
