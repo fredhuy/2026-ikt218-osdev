@@ -1,34 +1,30 @@
 #include "menu.h"
 #include "terminal.h"
 #include "libc/string.h"
-#include "arch/i386/isr.h"
 #include "colors.h"
+#include "keyboard.h"
 
 static int selected_item = 0;
 static const char* options[] = {"PRINT DEBUG INFO", "PAINT", "WRITE TEXT"};
+
 #define NUM_OPTIONS 3
 
 
-void menu_keyboard_handler(registers_t* regs) {
-    terminal_write("STØFF IS BIING WRITTEN!", 0x0A, 30, 15);
+static void menu_keyboard_handler(char character, uint8 scancode) {
+    (void)character;
 
-    uint8 scancode = inb(0x60); // Du må kanskje flytte inb() til en header eller i/o-fil
-    if (scancode & 0x80) return;
-
-    // Vi bruker scancodes direkte for å være helt sikre (W=0x11, S=0x1F, Enter=0x1C)
-    switch(scancode) {
+    switch (scancode) {
         case 0x11: // W
             selected_item = (selected_item - 1 + NUM_OPTIONS) % NUM_OPTIONS;
-            //draw();
             terminal_write("W...", 0x0A, 30, 15);
             break;
+
         case 0x1F: // S
             selected_item = (selected_item + 1) % NUM_OPTIONS;
-            //draw();
             terminal_write("S...", 0x0A, 30, 15);
             break;
+
         case 0x1C: // Enter
-            // Her kaller du funksjonen for det valgte valget
             terminal_write("Executing...", 0x0A, 30, 15);
             break;
     }
@@ -38,7 +34,7 @@ void menu_init() {
     draw();
     // Her skjer magien: Vi registrerer menyens egen handler til IRQ1 (tastatur)
     // IRQ1 er vanligvis interrupt 33 (32 + 1)
-    register_interrupt_handler(33, menu_keyboard_handler);
+    keyboard_set_event_handler(menu_keyboard_handler);
 }
 
 void draw_window(const char* title) {
