@@ -5,22 +5,43 @@
 #include "libc/string.h"
 #include "libc/stdbool.h"
 #include "colors.h"
+#include "Music_Player/song.h"
 
 static int selected_item = 0;
-#define NUM_OPTIONS 3
+#define NUM_OPTIONS 4
+
+void play_music(void);
+void play_song_impl(Song* song);
 
 void test_action() {
-    terminal_write("clicked 1st button", COLOR(BLUE, WHITE), 45, 16);
+    terminal_write("this will show info, like memory and interupt stuff", COLOR(BLUE, WHITE), 45, 15);
+    terminal_write("(the stuff that originally got printed when the system started)", COLOR(BLUE, WHITE), 45, 16);
 }
 
-void test_actio3() {
-    terminal_write("clicked 3rd button", COLOR(BLUE, WHITE), 45, 16);
+void method_that_starts_typegame() {
+    terminal_write("<to be added>", COLOR(BLUE, WHITE), 45, 16);
+}
+
+void play_music(void) {
+    terminal_write("enjoy the music!", COLOR(BLUE, WHITE), 45, 16);
+    Song songs[] = {
+        {music_1, sizeof(music_1) / sizeof(Note)}
+    };
+
+    uint32_t n_songs = sizeof(songs) / sizeof(Song);
+
+    while (1) {
+        for (uint32_t i = 0; i < n_songs; i++) {
+            play_song_impl(&songs[i]);
+        }
+    }
 }
 
 struct button start_menu[] = {
     {"Print info", test_action},
     {"Paint program", enter_paint_program},
-    {"Play game", test_actio3}
+    {"Play game", method_that_starts_typegame},
+    {"Play music", play_music}
 };
 
 static void draw_buttons() {
@@ -31,7 +52,7 @@ static void draw_buttons() {
 
     for (int i = 0; i < num_buttons; i++) {
         bool is_selected = (i == selected_item);
-        print_button(&start_menu[i], is_selected, start_x, start_y + i * 4);
+        print_button(&start_menu[i], is_selected, start_x, start_y + i * 3);
     }
 }
 
