@@ -1,11 +1,12 @@
 #include "menu.h"
 #include "main_menu.h"
-#include "paint.h"
+#include "apps/paint/paint.h"
 #include "terminal.h"
 #include "libc/string.h"
 #include "libc/stdbool.h"
 #include "arch/i386/isr.h"
 #include "colors.h"
+#include "keyboard.h"
 
 int current_menu = MAIN_MENU; // 0 = main menu, 1 = paint program
 
@@ -40,11 +41,9 @@ void keyboard_handler(registers_t* regs) {
     switch(current_menu) {
         case MAIN_MENU:
             handle_main_menu_keyboard(scancode);
-            terminal_write("Main menu", COLOR(LIGHT_GREY, BLACK), 0, 20);
             break;
         case PAINT_MENU:
             handle_paint_keyboard(scancode);
-            terminal_write("Paint menu", COLOR(LIGHT_GREY, BLACK), 0, 20);
             break;
     }
 }

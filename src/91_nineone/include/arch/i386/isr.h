@@ -76,6 +76,4 @@ static inline uint8 inb(uint16 port) {
 }
 
 
-void keyboard_callback(registers_t* regs);
-
 #endif

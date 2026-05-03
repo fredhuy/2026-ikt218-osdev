@@ -24,6 +24,7 @@ void terminal_putchar(uint8 c, uint8 color, int x, int y);
  */
 void terminal_write(const char* str, uint8 color, int x, int y);
 
-void terminal_clear();
+// Clear terminal with a uint8 color attribute @param color
+void terminal_clear(uint8 color);
 
 #endif // TERMINAL_H

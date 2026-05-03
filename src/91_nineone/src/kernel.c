@@ -11,6 +11,13 @@ extern uint32_t end;
 #include "arch/i386/isr.h"
 #include "pit.h"
 
+#include "keyboard.h"
+
+#include "Music_Player/song.h"
+
+void play_music(void);
+void play_song_impl(Song* song);
+
 int main() {
     
     init_gdt();
@@ -18,7 +25,8 @@ int main() {
 
     idt_init();
 
-    register_interrupt_handler(IRQ1, keyboard_callback);
+    init_keyboard();
+
     init_pit();
 
     idt_enable_interrupts();
@@ -48,24 +56,28 @@ int main() {
 
     printf("Keyboard input:");   
 
-    printf("IDT loaded");
-
-    asm volatile("int $0x3");
-
-    printf("After interrupt");
-
-    printf("Keyboard input:");
-    
     void* some_memory = malloc(12345); 
     void* memory2 = malloc(54321); 
     void* memory3 = malloc(13331);
     init_menu();
 
-    
+    /* play_music(); Commented out for mercy to the ears */
 
-    while (1) { // coming soon 
-        
+    while (1) {
     }
-
     return 0;
+}
+
+void play_music(void) {
+    Song songs[] = {
+        {music_1, sizeof(music_1) / sizeof(Note)}
+    };
+
+    uint32_t n_songs = sizeof(songs) / sizeof(Song);
+
+    while (1) {
+        for (uint32_t i = 0; i < n_songs; i++) {
+            play_song_impl(&songs[i]);
+        }
+    }
 }

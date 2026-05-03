@@ -1,4 +1,4 @@
-#include "paint.h"
+#include "apps/paint/paint.h"
 #include "menu.h"
 #include "main_menu.h"
 #include "terminal.h"
@@ -45,24 +45,11 @@ void handle_paint_keyboard(uint8 scancode) {
             paint_menu[selected_item].action();
             return;
     }
-    switch (selected_item) {
-        case 0:
-            terminal_write("selected: 0", COLOR(LIGHT_GREY, BLACK), 3, 21);
-            break;
-        case 1:
-            terminal_write("selected: 1", COLOR(LIGHT_GREY, BLACK), 3, 21);
-            break;
-        case 2:
-            terminal_write("selected: 2", COLOR(LIGHT_GREY, BLACK), 3, 21);
-            break;
-        default:
-            terminal_write("selected: ?", COLOR(LIGHT_GREY, BLACK), 3, 21);
-    }
     draw_buttons();
 }
 
 void enter_paint_program() {
-    terminal_clear();
+    terminal_clear(0);
     draw_window("Paint Program");
     draw_buttons();
     current_menu = PAINT_MENU;

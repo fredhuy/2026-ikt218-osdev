@@ -1,6 +1,6 @@
 #include "menu.h"
 #include "main_menu.h"
-#include "paint.h"
+#include "apps/paint/paint.h"
 #include "terminal.h"
 #include "libc/string.h"
 #include "libc/stdbool.h"
@@ -51,7 +51,7 @@ void handle_main_menu_keyboard(uint8 scancode) {
 }
 
 void enter_main_menu() {
-    terminal_clear();
+    terminal_clear(0);
     draw_window("Main Menu");
     draw_buttons();
     current_menu = MAIN_MENU;

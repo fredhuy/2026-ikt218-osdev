@@ -71,11 +71,13 @@ add_executable(uiaos-kernel
     src/terminal.c
     src/menu.c
 	src/main_menu.c
-	src/paint.c
+	src/apps/paint/paint.c
 	src/arch/i386/idt.c
 	src/arch/i386/isr.c
 	src/arch/i386/isr.asm
 	src/pit.c
+	src/Music_Player/SongPlayer.cpp
+	src/keyboard.c
 )
 
 # Include directories for the kernel target

@@ -1,6 +1,7 @@
 #include "kernel/system.h"
 #include "libc/stdint.h"
 #include "colors.h"
+#include "terminal.h"
 
 #define print terminal_write
 
