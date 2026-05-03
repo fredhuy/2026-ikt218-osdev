@@ -54,12 +54,9 @@ int main() {
     void* some_memory = malloc(12345); 
     void* memory2 = malloc(54321); 
     void* memory3 = malloc(13331);
-    sleep_interrupt(3000);
+    sleep_interrupt(2000);
     init_menu();
 
-    /* play_music(); Commented out for mercy to the ears */
-
-    while (1) {
-    }
+    while (1) {}
     return 0;
 }

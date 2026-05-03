@@ -23,6 +23,10 @@ void terminal_putchar(uint8 c, uint8 color, int x, int y);
  * @param y      Starting row
  */
 void terminal_write(const char* str, uint8 color, int x, int y);
+void terminal_setchar(uint8 c, int x, int y);
+void terminal_setcharfg(uint8 c, uint8 color_fg, int x, int y);
+void terminal_setcolor(uint8 color, int x, int y);
+void terminal_setbgcolor(uint8 color, int x, int y);
 
 // Clear terminal with a uint8 color attribute @param color
 void terminal_clear(uint8 color);

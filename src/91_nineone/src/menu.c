@@ -35,7 +35,6 @@ void print_button(struct button* btn, bool is_selected, int x, int y) {
 void keyboard_handler(registers_t* regs) {
 
     uint8 scancode = inb(0x60);
-    if (scancode & 0x80) return;
 
     // Vi bruker scancodes direkte for å være helt sikre (W=0x11, S=0x1F, Enter=0x1C)
     switch(current_menu) {
