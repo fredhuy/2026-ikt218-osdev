@@ -52,6 +52,8 @@ void typegame_start()
 {
     current_index = 0;
     mistakes = 0;
+    wpm = 0;
+    last_second_tracker = 0;
     isRunning = true;
 
     // Clear screen
@@ -68,14 +70,13 @@ void typegame_start()
 
 void typegame_update()
 {
-    // Update timer
-    // Update other UI (wpm) 
     
     if(isRunning == false) {
         return;
     }
 
     uint32 elapsed_ticks = get_current_tick() - start_ticks;
+    elapsed_ticks *= 2;
     uint32 elapsed_seconds = elapsed_ticks / PIT_TARGET_FREQUENCY;
 
     if (elapsed_seconds != last_second_tracker) {
@@ -94,7 +95,7 @@ void typegame_update()
         
     }
 
-    if (elapsed_seconds >= 15) {
+    if (elapsed_seconds >= 20) {
         isRunning = false;
     }
     

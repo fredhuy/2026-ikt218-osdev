@@ -31,7 +31,7 @@ int main(void) {
 
     while (1) {
 
-         if(current_menu == TYPEGAME_MENU) {
+        if(current_menu == TYPEGAME_MENU) {
             typegame_update();
         }
 

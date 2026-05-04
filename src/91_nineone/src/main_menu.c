@@ -25,6 +25,8 @@ void test_action() {
 
     printf("IDT: loaded");
 
+    print_memory_layout();
+
     uint32_t t1 = get_current_tick();
     sleep_interrupt(100);
     uint32_t t2 = get_current_tick();
@@ -45,6 +47,10 @@ void test_action() {
         printf("malloc: failed");
     }
 
+    free(a);
+    free(b);
+    free(c);
+
     printf("a=0x%x b=0x%x", (uint32_t)a, (uint32_t)b);
     printf("c=0x%x", (uint32_t)c);
 
@@ -58,7 +64,6 @@ void test_action() {
 }
 
 void method_that_starts_typegame() {
-    //terminal_write("<to be added>", COLOR(BLUE, WHITE), 45, 16);
     current_menu = TYPEGAME_MENU;
     typegame_start();
 }
