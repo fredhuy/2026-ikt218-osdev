@@ -25,6 +25,8 @@ void test_action() {
 
     printf("IDT: loaded");
 
+    print_memory_layout();
+
     uint32_t t1 = get_current_tick();
     sleep_interrupt(100);
     uint32_t t2 = get_current_tick();
@@ -45,6 +47,10 @@ void test_action() {
         printf("malloc: failed");
     }
 
+    free(a);
+    free(b);
+    free(c);
+
     printf("a=0x%x b=0x%x", (uint32_t)a, (uint32_t)b);
     printf("c=0x%x", (uint32_t)c);
 
@@ -58,18 +64,24 @@ void test_action() {
 }
 
 void play_music(void) {
-    terminal_write("enjoy the music!", COLOR(BLUE, WHITE), 45, 16);
-    Song songs[] = {
-        {music_1, sizeof(music_1) / sizeof(Note)}
+    terminal_clear(COLOR(WHITE, BLACK));
+    draw_window("Music Player");
+
+
+    printf("Song started...");
+
+    Song song = {
+        music_1,
+        sizeof(music_1) / sizeof(Note)
     };
 
-    uint32_t n_songs = sizeof(songs) / sizeof(Song);
+    play_song_impl(&song);
 
-    while (1) {
-        for (uint32_t i = 0; i < n_songs; i++) {
-            play_song_impl(&songs[i]);
-        }
-    }
+    printf("Song finished.");
+    printf("Returning to main menu...");
+
+    sleep_interrupt(1000);
+    enter_main_menu();
 }
 
 struct button start_menu[] = {
