@@ -9,6 +9,8 @@
 #include "arch/i386/isr.h"
 #include "pit.h"
 #include "keyboard.h"
+#include "main_menu.h"
+#include "apps/typegame/typegame.h"
 
 extern uint32_t end;
 
@@ -30,13 +32,15 @@ int main(void) {
     init_menu();
 
     while (1) {
-
-        if(current_menu == TYPEGAME_MENU) {
-            typegame_update();
+            if (current_menu == MAIN_MENU) {
+                main_menu_update();
+            }
+            
+            if (current_menu == TYPEGAME_MENU) {
+                typegame_update();
+            }
+            __asm__ volatile("hlt");
         }
-
-        __asm__ volatile("hlt");
-    }
 
     return 0;
 }
