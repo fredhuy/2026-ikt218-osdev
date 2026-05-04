@@ -64,18 +64,24 @@ void method_that_starts_typegame() {
 }
 
 void play_music(void) {
-    terminal_write("enjoy the music!", COLOR(BLUE, WHITE), 45, 16);
-    Song songs[] = {
-        {music_1, sizeof(music_1) / sizeof(Note)}
+    terminal_clear(COLOR(WHITE, BLACK));
+    draw_window("Music Player");
+
+
+    printf("Song started...");
+
+    Song song = {
+        music_1,
+        sizeof(music_1) / sizeof(Note)
     };
 
-    uint32_t n_songs = sizeof(songs) / sizeof(Song);
+    play_song_impl(&song);
 
-    while (1) {
-        for (uint32_t i = 0; i < n_songs; i++) {
-            play_song_impl(&songs[i]);
-        }
-    }
+    printf("Song finished.");
+    printf("Returning to main menu...");
+
+    sleep_interrupt(1000);
+    enter_main_menu();
 }
 
 struct button start_menu[] = {
