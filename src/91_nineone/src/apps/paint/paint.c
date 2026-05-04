@@ -21,11 +21,15 @@
 #define COLOR_PICKER_START_X 66
 #define COLOR_PICKER_START_Y 6
 
+#define POS_MUL 4000 // Each cell in the paint area is 50x50 pixels
+#define VEL_LIM 50
+
 static bool keys[128] = {false};
 
 static int selected_item = 0;
 static int mode = MODE_MENU;
 static int x, y = 10;
+static int v_x, v_y = 0;
 static int brush = BRUSH_PAINT;
 static uint8 current_color = WHITE;
 static int color_x = WHITE % 4;
@@ -45,18 +49,20 @@ void attempt_setcharfg(char c, uint8 color_fg, int x, int y) {
     terminal_setcharfg(c, color_fg, x, y); // Full block
 }
 
-void draw_cross(int x, int y) {
+void draw_cross() {
+    int x_pos = x / POS_MUL;
+    int y_pos = y / POS_MUL;
     uint8 color = brush == BRUSH_PAINT ? WHITE : RED;
-    attempt_setcharfg(0xB3, color, x, y+1); // │
-    attempt_setcharfg(0xB3, color, x, y-1);
-    attempt_setcharfg(0xC4, color, x-1, y); // ─
-    attempt_setcharfg(0xC4, color, x+1, y);
-    attempt_setcharfg(0xC5, color, x, y); // ┼
+    attempt_setcharfg(0xB3, color, x_pos, y_pos+1); // │
+    attempt_setcharfg(0xB3, color, x_pos, y_pos-1);
+    attempt_setcharfg(0xC4, color, x_pos-1, y_pos); // ─
+    attempt_setcharfg(0xC4, color, x_pos+1, y_pos);
+    attempt_setcharfg(0xC5, color, x_pos, y_pos); // ┼
 }
 
 void enter_paint_mode() {
     mode = MODE_PAINT;
-    draw_cross(x, y);
+    draw_cross();
 }
 
 struct button paint_menu[] = {
@@ -83,7 +89,7 @@ void handle_paint_menu_keyboard(char c) {
         case 's':
             selected_item = (selected_item + 1) % NUM_OPTIONS;
             break;
-        case '\r': // Enter
+        case '\n': // Enter
             paint_menu[selected_item].action();
             return;
     }
@@ -136,7 +142,7 @@ void handle_color_picker_menu_keyboard(char c) {
         case 'd':
             move_color_picker_cross(color_x + 1, color_y);
             break;
-        case '\r': // Enter
+        case '\n': // Enter
             mode = MODE_PAINT;
             brush = BRUSH_PAINT;
             current_color = 4 * color_y + color_x;
@@ -157,34 +163,44 @@ void show_color_picker() {
     draw_x(color_x, color_y); // Startposisjon for X
 }
 
-void undraw_cross(int x, int y) {
-    attempt_setchar(' ', x, y+1); // │
-    attempt_setchar(' ', x, y-1);
-    attempt_setchar(' ', x-1, y); // ─
-    attempt_setchar(' ', x+1, y);
-    attempt_setchar(' ', x, y); // ┼
+void undraw_cross() {
+    int x_pos = x / POS_MUL;
+    int y_pos = y / POS_MUL;
+    attempt_setchar(' ', x_pos, y_pos+1); // │
+    attempt_setchar(' ', x_pos, y_pos-1);
+    attempt_setchar(' ', x_pos-1, y_pos); // ─
+    attempt_setchar(' ', x_pos+1, y_pos);
+    attempt_setchar(' ', x_pos, y_pos); // ┼
 }
 
-void move_cross(int new_x, int new_y) {
-    undraw_cross(x, y);
+void move_cross(float new_x, float new_y) {
+    undraw_cross();
     x = new_x;  
     y = new_y;
-    if (x > 62) x = 62;
-    if (x < 2) x = 2;
-    if (y < 2) y = 2;
-    if (y > 22) y = 22;  
-    draw_cross(x, y);
+    if (x > 62*POS_MUL) x = 62*POS_MUL;
+    if (x < 2*POS_MUL) x = 2*POS_MUL;
+    if (y < 2*POS_MUL) y = 2*POS_MUL;
+    if (y > 22*POS_MUL) y = 22*POS_MUL;
+    draw_cross();
 }
 
 void tick_brush() {
     if (mode != MODE_PAINT) return;
-    if (keys[0x11]) move_cross(x, y-1); // W er nede
-    if (keys[0x1F]) move_cross(x, y+1); // S er nede
-    if (keys[0x1E]) move_cross(x-1, y); // A er nede
-    if (keys[0x20]) move_cross(x+1, y); // D er nede
+    if (keys[0x11]) v_y -= 2; // W er nede
+    if (keys[0x1F]) v_y += 2; // S er nede
+    if (keys[0x1E]) v_x -= 3; // A er nede
+    if (keys[0x20]) v_x += 3; // D er nede
+    if (v_x | v_y) {
+        move_cross(x + v_x, y + v_y);
+        if (v_x != 0) v_x = (v_x > 3*VEL_LIM ? 3*VEL_LIM : v_x < -3*VEL_LIM ? -3*VEL_LIM : v_x) - ((v_x > 0) - (v_x < 0));
+        if (v_y != 0) v_y = (v_y > 2*VEL_LIM ? 2*VEL_LIM : v_y < -2*VEL_LIM ? -2*VEL_LIM : v_y) - ((v_y > 0) - (v_y < 0));
+    }
     int color = (brush == BRUSH_PAINT) ? current_color : BLACK;
     
-    if (keys[0x1C]) {terminal_setbgcolor(color, x, y);} // Enter: paint/erase current cell
+    if (keys[0x1C]) {terminal_setbgcolor(color, x/POS_MUL, y/POS_MUL);} // Enter: paint/erase current cell
+    printf("X: %d Y: %d  ", x, y); // Debug info for current position of the brush
+    printf("vX: %d vY: %d  ", v_x, v_y); // Debug info for current position of the brush
+    resetRowNumber(); // Reset row number after printf to avoid messing with paint area
 }
 
 void handle_paint_mode_keyboard(char c) {
@@ -195,7 +211,7 @@ void handle_paint_mode_keyboard(char c) {
             return;
         case 'e': // E: Toggle Erase
             brush = (brush == BRUSH_PAINT) ? BRUSH_ERASE : BRUSH_PAINT;
-            draw_cross(x, y); // Redraw cross with new color
+            draw_cross(); // Redraw cross with new color
             terminal_write(brush == BRUSH_PAINT ? "Mode: PAINT " : "Mode: ERASE ", COLOR(YELLOW, BLACK), 66, 3);
             break;
         case 'c': // C: Open color picker

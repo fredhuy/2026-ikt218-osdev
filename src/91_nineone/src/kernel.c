@@ -31,6 +31,16 @@ int main(void) {
 
     while (1) {
 
+        switch (current_menu){
+            case TYPEGAME_MENU:
+                typegame_update();
+                break;
+            case PAINT_MENU:
+                tick_brush();
+                break;
+            default:
+                break;
+        }
         if(current_menu == TYPEGAME_MENU) {
             typegame_update();
         }
