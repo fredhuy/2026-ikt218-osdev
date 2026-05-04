@@ -56,6 +56,8 @@ extern "C" void play_song_impl(Song* song) {
 
         play_sound(note->frequency);
         sleep_interrupt(note->duration);
+        stop_sound(); //prevent smearing of notes
+        sleep_interrupt(10); 
     }
 
     stop_sound();

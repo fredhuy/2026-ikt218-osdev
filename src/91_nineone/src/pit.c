@@ -45,9 +45,9 @@ void sleep_busy(uint32_t milliseconds) {
 }
 
 void sleep_interrupt(uint32_t milliseconds) {
-    uint32_t end = get_current_tick() + milliseconds;
+    uint32_t start = get_current_tick();
 
-    while (get_current_tick() < end) {
+    while (get_current_tick() - start < milliseconds) {
         __asm__ volatile ("sti; hlt");
     }
 }
