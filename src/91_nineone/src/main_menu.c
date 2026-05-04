@@ -9,6 +9,7 @@
 #include "kernel/memory.h"
 #include "pit.h"
 #include "libc/stdio.h"
+#include "apps/typegame/typegame.h"
 
 static int selected_item = 0;
 #define NUM_OPTIONS 4
@@ -57,7 +58,9 @@ void test_action() {
 }
 
 void method_that_starts_typegame() {
-    terminal_write("<to be added>", COLOR(BLUE, WHITE), 45, 16);
+    //terminal_write("<to be added>", COLOR(BLUE, WHITE), 45, 16);
+    current_menu = TYPEGAME_MENU;
+    typegame_start();
 }
 
 void play_music(void) {

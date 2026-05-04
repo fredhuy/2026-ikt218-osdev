@@ -7,6 +7,7 @@
 #include "arch/i386/isr.h"
 #include "colors.h"
 #include "keyboard.h"
+#include "apps/typegame/typegame.h"
 
 int current_menu = MAIN_MENU; // 0 = main menu, 1 = paint program
 
@@ -43,6 +44,9 @@ void keyboard_handler(registers_t* regs) {
             break;
         case PAINT_MENU:
             handle_paint_keyboard(scancode);
+            break;
+        case TYPEGAME_MENU:
+            handle_typegame_keyboard(scancode);
             break;
     }
 }

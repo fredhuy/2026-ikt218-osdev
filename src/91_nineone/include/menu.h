@@ -3,6 +3,7 @@
 
 #define MAIN_MENU 0
 #define PAINT_MENU 1
+#define TYPEGAME_MENU 2
 
 #include "libc/stdbool.h"
 

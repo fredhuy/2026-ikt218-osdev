@@ -30,6 +30,11 @@ int main(void) {
     init_menu();
 
     while (1) {
+
+         if(current_menu == TYPEGAME_MENU) {
+            typegame_update();
+        }
+
         __asm__ volatile("hlt");
     }
 
