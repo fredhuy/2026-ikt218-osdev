@@ -55,7 +55,7 @@ uint8 terminal_getbgcolor(int x, int y) {
     
     uint16 current = vga_buffer[index];
     
-    return (current >> 12) & 0x0F; // Returnerer bare de øverste 4 bits som representerer bakgrunnsfargen
+    return (current >> 12) & 0x0F; // only return bits representing bg color
 }
 
 void terminal_write(const char* str, uint8 color, int x, int y) {
@@ -83,6 +83,3 @@ void terminal_clear(uint8 color)
 
     resetRowNumber();
 }
-
-    
-
