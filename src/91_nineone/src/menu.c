@@ -9,7 +9,7 @@
 #include "keyboard.h"
 #include "apps/typegame/typegame.h"
 
-int current_menu = MAIN_MENU; // 0 = main menu, 1 = paint program
+int current_menu = MAIN_MENU;
 
 void print_button(struct button* btn, bool is_selected, int x, int y) {
     int len = strlen(btn->label);
