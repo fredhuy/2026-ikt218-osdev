@@ -3,6 +3,7 @@
 
 extern "C" {
 #include "../pit.h"
+#include "libc/stdio.h"
 }
 
 // write one byte to I/O port
@@ -69,6 +70,8 @@ extern "C" void play_song_impl(Song* song) {
         Note* note = &song->notes[i];
 
         play_sound(note->frequency);
+        resetRowNumber();
+        printf("Playing note: %u Hz for %u ms", note->frequency, note->duration - 10); // Subtract 10 ms to account for the delay after stopping the sound, so that the note duration is more accurate.
         sleep_interrupt(note->duration);
 
         stop_sound(); // Prevent smearing of notes.
